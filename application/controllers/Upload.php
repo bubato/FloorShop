@@ -12,14 +12,11 @@ class Upload extends CI_Controller{
         $config['overwrite']     = TRUE;
     
         return $config;
-    }	
-	public function __construct(){
-		parent::__construct();
-		$this->load->model('pic_model');
-		$this->load->library('form_validation');
-		
-
-	}
+    } 
+  public function __construct(){
+    parent::__construct();
+    $this->load->library('form_validation');
+  }
   public function upload_($input) {
       $this->load->library('upload');
       $files = $_FILES;
@@ -38,27 +35,53 @@ class Upload extends CI_Controller{
       }   
       return $img;
   }
-	public function file_add(){
-      /*$this->upload_('imgs_describe');
-      $this->upload_('imgs_slice');*/
+  public function to_slug($str) {
+    $str = trim(mb_strtolower($str));
+    $str = preg_replace('/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/', 'a', $str);
+    $str = preg_replace('/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/', 'e', $str);
+    $str = preg_replace('/(ì|í|ị|ỉ|ĩ)/', 'i', $str);
+    $str = preg_replace('/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/', 'o', $str);
+    $str = preg_replace('/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/', 'u', $str);
+    $str = preg_replace('/(ỳ|ý|ỵ|ỷ|ỹ)/', 'y', $str);
+    $str = preg_replace('/(đ)/', 'd', $str);
+    $str = preg_replace('/[^a-z0-9-\s]/', '', $str);
+    $str = preg_replace('/([\s]+)/', '-', $str);
+    return $str;
+  }
+  public function add_product(){
       $this->load->helper('url');
       $this->load->Model("model");    
       $data = array(
-        'sp_name'=>$this->input->post('name_sp'),
-        'sp_cost_sale'=>$this->input->post('code_sp'),
-        'sp_cost_deal'=>$this->upload_('imgs_describe'),
-        'sp_time_deal'=>$this->upload_('imgs_slice'),
-        'sp_isnew'=>$this->input->post('size_sp'),
-        'sp_size_length'=>$this->input->post('length_sp'),
-        'sp_size_weight'=>$this->input->post('material_sp'),
-        'sp_size_height'=>$this->input->post('status_sp'),
-        'sp_from'=>$this->input->post('type_sp'),
-        'sp_description'=>$this->input->post('application_sp'),
-        'sp_detail'=>$this->input->post('detail_sp')
+        'name' => $this->input->post('name_sp'),
+        'codehash' => $this->input->post('code_sp'),
+        'slug' => $this->to_slug($this->input->post('name_sp')),
+        'rate' => (int)$this->input->post('rate_sp'),
+        'image' => $this->upload_('imgs_describe'),
+        'other_image' => $this->upload_('imgs_slice'),
+        'size' => $this->input->post('size_sp'),
+        'length' => $this->input->post('length_sp'),
+        'material' => $this->input->post('material_sp'),
+        'status' => $this->input->post('status_sp'),
+        'id_type' => /*$this->input->post('type_sp')*/ 1,
+        'application' => $this->input->post('application_sp'),
+        'detail' => $this->input->post('detail_sp'),
+        'note' => $this->input->post('note_sp')
       );
-      print_r($data);
-      //$this->model->order_summary_insert($data,'sp_category');
+      $this->model->order_summary_insert($data,'table_product');
       echo "Thêm sản phẩm mới thành công";
-	}	
+  } 
+  public function add_product_type(){
+      $this->load->helper('url');
+      $this->load->Model("model");    
+      $data = array(
+        'name' => $this->input->post('name_type'),
+        'slug' => $this->to_slug($this->input->post('name_type')),
+        'image' => $this->upload_('imgs_describe_type'),
+        'detail' => $this->input->post('detail_type'),
+        'note' => $this->input->post('note_type')
+      );
+      $this->model->order_summary_insert($data,'table_product_type');
+      echo "Thêm loại sản phẩm mới thành công";
+  }
 
 }

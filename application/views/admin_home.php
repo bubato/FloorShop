@@ -16,9 +16,13 @@
   <link rel="stylesheet" href="css/style_admin.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="img/favicon.png" />
+  <style type="text/css">
+    .hover{
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <?php $this->load->view("admin_element/header")?>
@@ -34,31 +38,65 @@
             </a>
           </li>-->
           <li class="nav-item">
+            <a class="nav-link" onclick="openTab('_setting_home')">
+              <i class="ti-wand menu-icon"></i>
+              <span class="menu-title">Cài đặt trang chủ</span>
+            </a>
+              </li> <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="ti-palette menu-icon"></i>
-              <span class="menu-title">Sản phẩm</span>
+              <span class="menu-title">Loại Sản phẩm</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" onclick="openTab('_type_list')">Danh sách loại sản phẩm</a></li>
+                <li class="nav-item"> <a class="nav-link" onclick="openTab('_type_add')">Thêm loại sản phẩm</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-type" aria-expanded="false" aria-controls="ui-type">
+              <i class="ti-package menu-icon"></i>
+              <span class="menu-title">Sản phẩm</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-type">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" onclick="openTab('_sp_list')">Danh sách sản phẩm</a></li>
                 <li class="nav-item"> <a class="nav-link" onclick="openTab('_sp_add')">Thêm sản phẩm</a></li>
-                <li class="nav-item"> <a class="nav-link" onclick="openTab('_sp_edit')">Chỉnh sửa sản phẩm</a></li>
-                <li class="nav-item"> <a class="nav-link" onclick="openTab('_sp_del')">Xóa sản phẩm</a></li>
               </ul>
             </div>
           </li>
         </ul>
       </nav>
-      <!-- partial -->
+      <!-- setting direct tab in ui.js-->
       <div class="main-panel" id="main_panel">
          <div id="tab_dashboard" style="display:none">
              <?php $this->load->view("admin_element/dashboard")?>
          </div>
-         <div id="tab_sp_add">
+         <div id="tab_setting_home" style="display:none">
+             <?php $this->load->view("admin_element/setting_home")?>
+         </div>
+         <div id="tab_sp_add" style="display:none">
              <?php $this->load->view("admin_element/sp_add")?>
          </div>
-         <div id="tab_sp_edit"></div>
-         <div id="tab_sp_del"></div>
+         <div id="tab_sp_list" style="display:none">
+             <?php $this->load->view("admin_element/sp_list")?>
+         </div>
+         <div id="tab_sp_edit" style="display:none">1</div>
+         <div id="tab_sp_del" style="display:none">2</div>
+         <div id="tab_type_add" style="display:block">
+           <?php $this->load->view("admin_element/lsp_add")?>
+         </div>
+         <div id="tab_type_list" style="display:none">
+             <?php $this->load->view("admin_element/lsp_list")?>
+         </div>
+         <div id="tab_type_edit" style="display:none">3</div>
+         <div id="tab_type_del" style="display:none">4</div>
       </div>
       <!-- main-panel ends -->
     </div>
@@ -76,20 +114,7 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="js/admin/dashboard.js"></script>
-  <!-- End custom js for this page-->
-  <script type="text/javascript">
-      const listTab = ["tab_dashboard", "tab_sp_add", "tab_sp_edit", "tab_sp_del"];
-      function openTab(tab) {
-          listTab.forEach(Item => {
-            Id(Item).style.display = "none";
-          });
-          Id("tab" + tab).style.display = "block";
-      }
-
-      function Id(text) {
-          return document.getElementById(text);
-      }    
-  </script>
+  <script src="js/admin/ui.js"></script>
 </body>
 
 </html>

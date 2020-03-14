@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['max_size']             = 204800;
-$config['base_url'] = 'http://localhost/sangotuananh/';/*
+$config['base_url'] = 'http://localhost/FloorShop/';/*
 |--------------------------------------------------------------------------
 | Index File
 |--------------------------------------------------------------------------
